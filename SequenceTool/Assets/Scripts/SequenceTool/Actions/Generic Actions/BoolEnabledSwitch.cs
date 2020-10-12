@@ -6,6 +6,9 @@ namespace SequenceTool
 {
 	public class BoolEnabledSwitch : SwitchAction
 	{
+		//Let's try making events that you can register GOs and functions to. Seems nice. Keeps the sequence about timing.
+
+
 		[Header(" ")]
 		public BoolWrapper boolRef;
 
