@@ -12,7 +12,7 @@ namespace SequenceTool
 		[Header("A header")]
 		public Rigidbody2D rigidbody2DReference;
 		
-		public Vector3Wrapper movementVectorInput;
+		public Vector3 movementVectorInput;
 
 		public bool useInputAsDirection = false;
 		public bool useReverseVector = false;
@@ -34,30 +34,22 @@ namespace SequenceTool
 			moveDirection = direction.normalized;
 			if (useInputAsDirection)
 			{
-				moveDirection = movementVectorInput.vectorValue.normalized;
+				moveDirection = movementVectorInput.normalized;
 			}
 			if (useReverseVector)
 			{
-				moveDirection = (movementVectorInput.vectorValue * -1.0f).normalized;
+				moveDirection = (movementVectorInput * -1.0f).normalized;
 			}
 
 			startPosition = rigidbody2DReference.position;
 			endPosition = startPosition + moveDirection * distance; //This position can't quite be expected since collision with other objects might stop it
-
-
-
-			//float speed = distance / actionDuration;
-			//Vector2 movementVector = moveDirection * speed;
-			//rigidbody2DReference.velocity = movementVector;
 		}
-
 
 		public override void EndAction()
 		{
 			base.EndAction();
 			UpdateValue();
 		}
-
 
 		protected override void UpdateValue()
 		{
@@ -74,18 +66,6 @@ namespace SequenceTool
 			Debug.Log("NormalizedTimer: " + normalizedTimer + ", NewVelocity: " + (diff * (1 / timeForwards)).ToString("F4") + ", CurrentPos: " + currentPosition.ToString("F4") + ", NextPos: " + nextPosition.ToString("F4") + ", Diff:" + diff.ToString("F4"));
 
 			rigidbody2DReference.velocity = diff * (1/timeForwards);
-
-
-			//Vector2 currentPosition = rigidbody2DReference.position;
-
-			//float normalizedTimer = Utility.NormalizeTo01Scale(0, actionDuration, actionTimer);
-			//Vector2 nextPosition = Vector2.Lerp(startPosition, endPosition, normalizedTimer);
-
-			//Vector2 diff = nextPosition - currentPosition;
-
-			//diff *= 1/Time.fixedDeltaTime;
-
-			//rigidbody2DReference.velocity = diff;
 		}
 
 		protected override void RestoreOriginalValue()

@@ -5,30 +5,30 @@ using UnityEngine;
 
 namespace SequenceTool
 {
-	public class SpriteListAction : TimedArbitraryCodeAction
+	public class SpriteListAction : MonoBehaviour
 	{
 		public SpriteRenderer spriteRendererReference;
 		public List<SpriteAndTime> spritesAndTimes;
 
-		protected override void Update()
-		{
-			if (!isExecuting) { return; }
+		//protected override void Update()
+		//{
+		//	if (!isExecuting) { return; }
 
-			SetSpriteBasedOnTime();
+		//	SetSpriteBasedOnTime();
 
-			base.Update();
-		}
+		//	base.Update();
+		//}
 
-		private void SetSpriteBasedOnTime()
-		{
-			foreach (SpriteAndTime spriteAndTime in spritesAndTimes)
-			{
-				if(actionTimer >= spriteAndTime.time)
-				{
-					spriteRendererReference.sprite = spriteAndTime.sprite;
-				}
-			}
-		}
+		//private void SetSpriteBasedOnTime()
+		//{
+		//	foreach (SpriteAndTime spriteAndTime in spritesAndTimes)
+		//	{
+		//		if(actionTimer >= spriteAndTime.time)
+		//		{
+		//			spriteRendererReference.sprite = spriteAndTime.sprite;
+		//		}
+		//	}
+		//}
 	}
 
 	[System.Serializable]

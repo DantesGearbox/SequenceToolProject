@@ -7,7 +7,7 @@ namespace SequenceTool
 {
 	public class Vector3OverTime : OverTimeAction
 	{
-		public Vector3Wrapper vectorReference;
+		public Vector3 vectorReference;
 		public Vector3 startValue;
 		public Vector3 endValue;
 
@@ -15,23 +15,23 @@ namespace SequenceTool
 
 		protected override void RestoreOriginalValue()
 		{
-			vectorReference.vectorValue = onEnterValue;
+			vectorReference = onEnterValue;
 		}
 
 		protected override void SetToEndValue()
 		{
-			vectorReference.vectorValue = endValue;
+			vectorReference = endValue;
 		}
 
 		protected override void StoreOriginalValue()
 		{
-			onEnterValue = vectorReference.vectorValue;
+			onEnterValue = vectorReference;
 		}
 
 		protected override void UpdateValue()
 		{
 			float normalizedTimer = Utility.NormalizeTo01Scale(0, actionDuration, actionTimer);
-			vectorReference.vectorValue = Vector3.Lerp(startValue, endValue, normalizedTimer);
+			vectorReference = Vector3.Lerp(startValue, endValue, normalizedTimer);
 		}
 	}
 }

@@ -17,7 +17,7 @@ namespace SequenceTool
 
 		public Rigidbody2D rigidbody2DReference;
 		
-		public Vector3Wrapper movementVectorInput;
+		public Vector3 movementVectorInput;
 
 		[Header("Shortcuts")]
 		public bool useReverseVector = false;
@@ -41,18 +41,21 @@ namespace SequenceTool
 			moveDirection = direction.normalized;
 			if (useInputAsDirection)
 			{
-				moveDirection = movementVectorInput.vectorValue.normalized;
+				moveDirection = movementVectorInput.normalized;
 			}
 			if (useReverseVector)
 			{
-				moveDirection = (movementVectorInput.vectorValue * -1.0f).normalized;
+				moveDirection = (movementVectorInput * -1.0f).normalized;
 			}
 
 			startPosition = rigidbody2DReference.position;
 			endPosition = startPosition + (moveDirection * distance); //This position can't quite be expected since collision with other objects might stop it
 		}
 
-		protected override void UpdateValue()
+		//This piece of code is so nice because it can change a value over time according to a lerp function.
+		//In this case it is lerp on a vec2, but it could be anything with some generalistaion.
+		//I want to keep this and also kind of want to include it in the sequence tool as a tiny lerp library.
+		protected override void UpdateValue() 
 		{
 			float timeForwards = Time.deltaTime;
 

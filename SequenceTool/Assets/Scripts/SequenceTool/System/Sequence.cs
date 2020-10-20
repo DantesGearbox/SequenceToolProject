@@ -1,37 +1,34 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace SequenceTool
 {
 	public class Sequence : MonoBehaviour
 	{
-		public bool finishBeforeNextExecution = true;
+		[Header("Properties")]
+		public bool invokeAllBeforeNextExecution = true;
 
-		public Action[] actions;
-
-		private float timer = 0;
+		[HideInInspector]
 		public bool sequenceIsExecuting = false;
 
-		private void Start()
-		{
-			actions = GetComponentsInChildren<Action>();
-		}
+		[Header("Timed events")]
+		public Event[] events;
+
+		private float timer = 0;
 
 		private void Update()
 		{
-			//Start relevant actions
-			foreach (Action action in actions)
+			//Invoke relevant events
+			foreach (Event e in events)
 			{
-				if (timer > action.startingTime && !action.isExecuting && !action.hasExecuted)
+				if (timer > e.startingTime && !e.hasInvoked)
 				{
-					action.StartAction();
+					e.unityEvent.Invoke();
+					e.hasInvoked = true;
 				}
 			}
 
-			//Stop sequence if all actions are done
-			if (AreAllActionsDone())
+			//Stop sequence if all events have been invoked
+			if (HasAllEventsInvoked())
 			{
 				StopSequence();
 			}
@@ -43,74 +40,38 @@ namespace SequenceTool
 			}
 		}
 
-		public bool AreAllActionsDone()
+		private bool HasAllEventsInvoked()
 		{
-			bool areAllActionsDone = true;
-			foreach (Action action in actions)
+			bool hasInvoked = true;
+			foreach (Event e in events)
 			{
-				if (!action.hasExecuted)
+				if (!e.hasInvoked)
 				{
-					areAllActionsDone = false;
+					hasInvoked = false;
 				}
 			}
-			return areAllActionsDone;
-		}
-
-		public bool IsSequenceExecuting()
-		{
-			return sequenceIsExecuting;
-		}
-
-		public void StartSequence()
-		{
-			if(finishBeforeNextExecution && sequenceIsExecuting) { return; }
-
-			StopAllActions();
-			ResetAllActions();
-			sequenceIsExecuting = true;
-			timer = 0;
+			return hasInvoked;
 		}
 
 		public void StopSequence()
 		{
 			sequenceIsExecuting = false;
 			timer = 0;
-			StopAllActions();
 		}
 
-		public void StopSequenceImmediately()
+		public void StartSequence()
 		{
-			sequenceIsExecuting = false;
+			if(invokeAllBeforeNextExecution && sequenceIsExecuting) { return; }
+			ResetAllEvents();
+			sequenceIsExecuting = true;
 			timer = 0;
-			StopAllActionsImmediately(); //WARNING: This might make the EndAction function of all actions play twice over a sequence.
 		}
 
-		public void PauseSequence()
+		private void ResetAllEvents()
 		{
-			sequenceIsExecuting = false;
-		}
-
-		private void StopAllActions()
-		{
-			foreach (Action action in actions)
+			foreach (Event e in events)
 			{
-				action.isExecuting = false;
-			}
-		}
-
-		private void ResetAllActions()
-		{
-			foreach (Action action in actions)
-			{
-				action.hasExecuted = false;
-			}
-		}
-
-		private void StopAllActionsImmediately()
-		{
-			foreach (Action action in actions)
-			{
-				action.EndAction();
+				e.hasInvoked = false;
 			}
 		}
 	}

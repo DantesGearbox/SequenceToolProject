@@ -7,7 +7,7 @@ namespace SequenceTool
 		[Header("A header")]
 		public Rigidbody2D rigidbody2DReference;
 		
-		public Vector3Wrapper movementVectorInput;
+		public Vector3 movementVectorInput;
 
 		public bool useInputAsDirection = false;
 		public bool useReverseVector = false;
@@ -29,11 +29,11 @@ namespace SequenceTool
 			moveDirection = direction.normalized;
 			if (useInputAsDirection)
 			{
-				moveDirection = movementVectorInput.vectorValue.normalized;
+				moveDirection = movementVectorInput.normalized;
 			}
 			if (useReverseVector)
 			{
-				moveDirection = (movementVectorInput.vectorValue * -1.0f).normalized;
+				moveDirection = (movementVectorInput * -1.0f).normalized;
 			}
 
 			startPosition = rigidbody2DReference.position;

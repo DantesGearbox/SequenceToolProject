@@ -5,22 +5,12 @@ using UnityEngine.Events;
 
 namespace SequenceTool
 {
-	public class Event : Action
+	[System.Serializable]
+	public class Event
 	{
-		[Header("Event settings")]
+		public float startingTime = 0;
+		[HideInInspector] public bool hasInvoked = false;
+
 		public UnityEvent unityEvent;
-
-		public override void StartAction()
-		{
-			isExecuting = true;
-			unityEvent.Invoke();
-			EndAction();
-		}
-
-		public override void EndAction()
-		{
-			isExecuting = false;
-			hasExecuted = true;
-		}
 	}
 }
