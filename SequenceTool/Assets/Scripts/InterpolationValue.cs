@@ -1,19 +1,26 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 
 namespace SequenceTool
 {
 	public class InterpolationValue : MonoBehaviour
 	{
 		[Header("Properties")]
-		public float valueStart = 0;
-		public float valueEnd = 0;
+		public float fromValue = 0;
+		public float toValue = 0;
 		public float duration = 0;
+
+		[Header("Events")]
+		public UnityEvent startEvent;
+		public UnityEvent endEvent;
 
 		[Header("Not implemented yet")]
 		public bool loop = false; 
 		public bool pingpong = false;
 		public bool finishBeforeRestart = false;
-		public TweenType.TweenTypes tweenType;
+		public TweenType tweenType;
+		//public TweenType.TweenTypes tweenType;
+		//public AnimationCurve curve;
 
 		[Header("Make private later")]
 		public float interpolationValue = 0;
@@ -33,7 +40,7 @@ namespace SequenceTool
 
 		private void Start()
 		{
-			interpolationValue = valueStart;
+			interpolationValue = fromValue;
 		}
 
 		private void UpdateValue()
@@ -43,8 +50,8 @@ namespace SequenceTool
 			float normalizedTimer = Utility.NormalizeTo01Scale(0, duration, timer);
 			float normalizedTimerForward = Utility.NormalizeTo01Scale(0, duration, timer + timeForwards);
 
-			float currentValue = Mathf.Lerp(valueStart, valueEnd, normalizedTimer);
-			float nextValue = Mathf.Lerp(valueStart, valueEnd, normalizedTimerForward);
+			float currentValue = Mathf.Lerp(fromValue, toValue, normalizedTimer);
+			float nextValue = Mathf.Lerp(fromValue, toValue, normalizedTimerForward);
 
 			absoluteValueChange = nextValue - currentValue;
 			valueChangeOverASecond = absoluteValueChange * (1 / timeForwards);
@@ -65,21 +72,27 @@ namespace SequenceTool
 		public void Run()
 		{
 			isExecuting = true;
+
+			startEvent.Invoke();
 		}
 
-		public void Run(float startVal, float endVal, float dur)
+		public void Run(float from, float to, float time)
 		{
-			valueStart = startVal;
-			valueEnd = endVal;
-			duration = dur;
+			fromValue = from;
+			toValue = to;
+			duration = time;
 			isExecuting = true;
+
+			startEvent.Invoke();
 		}
 
 		public void End()
 		{
 			isExecuting = false;
 			timer = 0;
-			interpolationValue = 0;
+			interpolationValue = fromValue;
+
+			endEvent.Invoke();
 		}
 
 		public float GetInterplationValue()

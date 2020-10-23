@@ -164,6 +164,7 @@ GameObject:
   - component: {fileID: 284990943}
   - component: {fileID: 284990945}
   - component: {fileID: 284990947}
+  - component: {fileID: 284990949}
   - component: {fileID: 284990948}
   - component: {fileID: 284990942}
   - component: {fileID: 284990944}
@@ -314,7 +315,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   distance: 4
-  duration: 0.25
+  duration: 0.26
 --- !u!114 &284990948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -327,16 +328,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 928babcd1655b534287bc04040eff2a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  valueStart: 0
-  valueEnd: 4
+  fromValue: 0
+  toValue: 0
   duration: 0.25
+  startEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  endEvent:
+    m_PersistentCalls:
+      m_Calls: []
   loop: 0
   pingpong: 0
   finishBeforeRestart: 0
-  tweenType: 0
+  tweenType: {fileID: 0}
   interpolationValue: 0
   timer: 0
   isExecuting: 0
+--- !u!114 &284990949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 284990941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 322ca0decc894d640afd84d13b6e0fef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 17
+  curveRepresentation:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &477314810
 GameObject:
   m_ObjectHideFlags: 0

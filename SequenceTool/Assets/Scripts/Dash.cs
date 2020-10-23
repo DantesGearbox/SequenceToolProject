@@ -9,10 +9,17 @@ public class Dash : MonoBehaviour
 	private Rigidbody2D rb;
 	private Vector3 nonZeroVelocity = Vector2.right;
 
+	private void OnEnd()
+	{
+		rb.velocity = Vector2.zero;
+		Debug.Log("End of Dash Interpolation Value");
+	}
+
 	void Start()
 	{
 		rb = GetComponent<Rigidbody2D>();
 		interpolationValue = GetComponent<SequenceTool.InterpolationValue>();
+		interpolationValue.endEvent.AddListener(OnEnd);
 	}
 
 	void Update()
